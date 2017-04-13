@@ -1,0 +1,28 @@
+<head>
+<script>
+const iframe_cmd = function(cmd,callback){
+    const encodedCmd=window.btoa(cmd);
+    var iframe = document.createElement("iframe");
+    iframe.src = "/iframe-cmd/"+encodedCmd;
+    iframe.style.visibility='hidden';
+    iframe.onload = function(){
+        const result=this.contentWindow.document.body.innerHTML;
+        callback(result);
+        document.body.removeChild(this);
+    };
+    document.body.appendChild(iframe);
+}
+const test = function(){
+    document.getElementById('result').innerHTML="...";
+    iframe_cmd(document.getElementById('cmdline').value,function(result){
+        document.getElementById('result').innerHTML=result;
+    });
+}
+</script>
+</head>
+<body>
+<h1>hello cmd</h1>
+<input type="text" id="cmdline"/>
+<p><button onclick="test()">exec</button></p>
+<p><div id="result">enter "dir" and click [exec]</div></p>
+</body>
